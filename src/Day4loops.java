@@ -99,15 +99,24 @@ Write a program that prompts the user to input a positive integer. It
 should then output a message indicating whether the number is a prime
 number.
  */
-    int isPrime;
+    int prime;
+    boolean isPrime = true;
     while(true){
         System.out.println("Enter a (positive integer) to check if it is a prime number:");
-        isPrime = input.nextInt();
-        if(isPrime<0)
+        prime = input.nextInt();
+        if(prime<0)
         System.out.println("Invalid number, try again.");
         else break;
-    } if(false);
-    System.out.println(isPrime);
+    }
+    //test prime
+    for(int i=prime-1;i>1;i--) {
+        if (prime%i==0){
+        isPrime=false;
+        System.out.println("no it is a prime number.");
+        break;}
+    }
+    if(isPrime)
+    System.out.println("YES it is a prime number.");
 
 
 

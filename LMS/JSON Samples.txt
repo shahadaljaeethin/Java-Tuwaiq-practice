@@ -1,0 +1,18 @@
+***for fast testing, use these Json samples/
+
+Course add Json:
+http://localhost:8080/api/v1/course/add
+{"id":"Math123456","title":"Pre calculus","course_code":"Mth100","contents":[{"lesson_title":"lesson 1","content":"1+1=2"},{"lesson_title":"lesson 2","content":"2=2"},{"lesson_title":"lesson 3","content":"3*3=9"},{"lesson_title":"lesson 4","content":"4/2=2"}],"level":1,"creditHours":2}
+{"id":"IT12345678","title":"Web development","course_code":"Web003","contents":[{"lesson_title":"lesson 1","content":"html"},{"lesson_title":"css","content":"2=2"},{"lesson_title":"lesson 3","content":"php"},{"lesson_title":"lesson 4","content":"database"}],"level":3,"creditHours":3}
+{"id":"Eng1234567","title":"English Course","course_code":"Eng334","contents":[{"lesson_title":"lesson 1","content":"ABC"},{"lesson_title":"lesson 2","content":"DEF"},{"lesson_title":"lesson 3","content":"GHI"},{"lesson_title":"lesson 4","content":"JKL"}],"level":5,"creditHours":3}
+get Sections By Time and day
+http://localhost:8080/api/v1/section/get/day and time/{day from 1-5}
+["08:00","12:30"]
+["09:00","09:50"]
+["10:00","13:30"]
+
+
+Create section
+http://localhost:8080/api/v1/section/add
+{"id":"Mth123","courseID":"Math123456","students":[{"name":"shahad","id":"123"},{"name":"haya","id":"122"}],"schedule":["08:00","00:00","08:00","00:00","08:00"],"isAvailable":true}
+{"id":"Web333","courseID":"IT12345678","students":[{"name":"Khadeeja","id":"661"},{"name":"Omar","id":"443"}],"schedule":["10:00","13:00","00:00","00:00","00:00"],"isAvailable":true}
