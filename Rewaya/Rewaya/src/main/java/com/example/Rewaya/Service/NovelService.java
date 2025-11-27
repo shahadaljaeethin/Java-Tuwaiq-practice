@@ -2,8 +2,10 @@ package com.example.Rewaya.Service;
 
 
 import com.example.Rewaya.Model.Author;
+import com.example.Rewaya.Model.Chapter;
 import com.example.Rewaya.Model.Novel;
 import com.example.Rewaya.Repository.AuthorRepository;
+import com.example.Rewaya.Repository.ChapterRepository;
 import com.example.Rewaya.Repository.NovelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import java.util.List;
 public class NovelService {
 private final NovelRepository novelRepository;
 private final AuthorRepository authorRepository;
+private final ChapterRepository chapterRepository;
 
 
     public String createNovel(Novel novel){
@@ -59,6 +62,10 @@ private final AuthorRepository authorRepository;
         if(novel==null) return false;
 
         //delete all chapters of this novel if any
+        List<Chapter> chapters = chapterRepository.findChapterByNovelId(id);
+        if(!chapters.isEmpty()){
+            for(Chapter ch: chapters) chapterRepository.delete(ch);
+        }
 
         //now delete the novel
         novelRepository.delete(novel);

@@ -1,6 +1,7 @@
 package com.example.Rewaya.Service;
 
 import com.example.Rewaya.Model.Author;
+import com.example.Rewaya.Model.User;
 import com.example.Rewaya.Repository.AuthorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -71,6 +72,14 @@ public class AuthorService {
         } catch (Exception e) {
             return password;
         }
+    }
+
+
+    public String accountStatus(boolean status,Integer admin,Integer author){
+        //User user =
+
+        String message = (status) ? "Account Activated! :)" : "Account banned successfully";
+        return message;
     }
 
 }

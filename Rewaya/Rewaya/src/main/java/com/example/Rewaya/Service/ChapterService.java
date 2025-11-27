@@ -29,45 +29,40 @@ public class ChapterService {
         if(!authorRepository.findAuthorById(nvl.getAuthorId()).getActive()) return "Author is unActive currently";
 //========================================
 
-       ch.setPublishDate(LocalDate.now());
-       //how can I find it?
-       int lastChapter = 1;
-       ch.setChapterNumber(lastChapter+1);
+        ch.setPublishDate(LocalDate.now());
+        Integer lastChap = chapterRepository.getLastChapterNumber(ch.getNovelId());
+        if(lastChap == null) lastChap = 0;
+
+       ch.setChapterNumber(lastChap+1);
+       chapterRepository.save(ch);
        return "Published! :)";
 
     }
 
-    public List<Novel> getAll(){return novelRepository.findAll();}
+    public List<Chapter> getAll(){return chapterRepository.findAll();}
 
 
-    public String updateNovel(Integer id,Novel upd){
+    public String updateChapter(Integer id,Chapter upd){
 
-        Author author = authorRepository.findAuthorById(upd.getAuthorId());
-        if(author==null) return "Author not found";
+        Chapter chapter = chapterRepository.findChapterById(id);
+        if(chapter==null) return "Chapter not found";
 
-        if(!author.getActive()) return "Author is unActive";
+//        Novel novel = novelRepository.findNovelById(upd.getNovelId());
+//        if(novel==null) return "Novel not found";
 
-        Novel novel = novelRepository.findNovelById(id);
-        if(novel==null) return "Novel not found";
         //end of check
-
-
-        novel.setTitle(upd.getTitle());
-        novel.setOverview(upd.getOverview());
-        novel.setCategory(upd.getCategory());
-        novelRepository.save(novel);
+        chapter.setTitle(upd.getTitle());
+        chapter.setContent(upd.getContent());
+        chapterRepository.save(chapter);
         return "updated";
 
     }
 
-    public boolean deleteAuthor(Integer id){
-        Novel novel = novelRepository.findNovelById(id);
-        if(novel==null) return false;
+    public boolean deleteChapter(Integer id){
+        Chapter chapter = chapterRepository.findChapterById(id);
+        if(chapter==null) return false;
 
-        //delete all chapters of this novel if any
-
-        //now delete the novel
-        novelRepository.delete(novel);
+        chapterRepository.delete(chapter);
         return true;
     }
 
