@@ -3,7 +3,17 @@ package com.example.Rewaya.Model;
 import jakarta.persistence.*;
 
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.cglib.core.Local;
 
+import java.time.LocalDate;
+
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Author{
 
@@ -46,6 +56,10 @@ public class Author{
 
     @AssertFalse
     @Column(nullable = false)
-    private boolean active = false;
+    private Boolean active;
+
+    @PastOrPresent
+    private LocalDate registerDate;
+
 
 }
