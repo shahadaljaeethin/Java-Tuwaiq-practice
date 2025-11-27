@@ -3,6 +3,7 @@ package com.example.Rewaya.Service;
 import com.example.Rewaya.Model.Author;
 import com.example.Rewaya.Model.User;
 import com.example.Rewaya.Repository.AuthorRepository;
+import com.example.Rewaya.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuthorService {
     private final AuthorRepository authorRepository;
+    private final UserRepository userRepository;
+
     //---------------
 
     public void registerAuthor(Author author){
@@ -74,12 +77,20 @@ public class AuthorService {
         }
     }
 
+    //E.E.P    Activate or even freeze an author
+    public String accountStatus(boolean status,Integer admin,Integer authorId){
 
-    public String accountStatus(boolean status,Integer admin,Integer author){
-        //User user =
+        Author auth = authorRepository.findAuthorById(authorId);
+        if(auth==null) return "author not found";
 
-        String message = (status) ? "Account Activated! :)" : "Account banned successfully";
+        User user = userRepository.findUserById(admin);
+        if(user==null) return "admin not found";
+        if(!user.getRole().equals("admin")) return "role not allowed to do this operation!";
+
+        auth.setActive(status);
+        String message = (status) ? "Account Activated! :)" : "Account froze successfully";
         return message;
+
     }
 
 }
