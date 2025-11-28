@@ -14,5 +14,9 @@ public interface NovelRepository extends JpaRepository<Novel,Integer> {
 
     @Query("select distinct n from Novel n join n.categories c where lower(c) in ?1")
     List<Novel> filterCategories(List<String> categories);
+//    Query("select n from Novel n where :userId member of n.likes")
+//    List<Novel> findAllNovelsLikedByUser(Integer userId);  crashed :(
+    List<Novel> findAllByIsCompleted(Boolean completed);
+
 
 }

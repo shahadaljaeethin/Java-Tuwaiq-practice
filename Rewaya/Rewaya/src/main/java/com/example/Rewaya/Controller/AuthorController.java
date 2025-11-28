@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/author")
+@RequestMapping("/api/v1/rewaya/author")
 public class AuthorController {
     private final AuthorService authorService;
 //------
@@ -21,8 +21,10 @@ public class AuthorController {
     public ResponseEntity<?> registerAuthor(@RequestBody @Valid Author author, Errors errors){
         if(errors.hasErrors()) return ResponseEntity.status(400).body(new ApiResponse(errors.getFieldError().getDefaultMessage()));
 
-        authorService.registerAuthor(author);
+        if(authorService.registerAuthor(author))
         return ResponseEntity.status(200).body(new ApiResponse("registered successfully, wait for the admin to response"));
+        return ResponseEntity.status(200).body(new ApiResponse("registered successfully, please contact Technical support to activate your account quickly"));
+
     }
 
     @GetMapping("/get")

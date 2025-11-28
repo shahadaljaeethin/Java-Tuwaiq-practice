@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 @Data
 @AllArgsConstructor
@@ -28,9 +29,8 @@ public class Tip{
     @PastOrPresent
     private LocalDate publishDate;
 
-    @PositiveOrZero
-    @Column(columnDefinition = "int default 0")
-    private Integer likes;
+    private ArrayList<Integer> likes; //size = 0 = 0 likes
+
 
     @NotEmpty(message = "log in as author")
     private Integer authorId;

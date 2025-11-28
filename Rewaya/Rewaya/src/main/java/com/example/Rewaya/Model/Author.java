@@ -32,7 +32,7 @@ public class Author{
     private String username;
 
     @NotEmpty(message = "fill password")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&._-]).{8,30}$",message = "password must contains at least one small&capital letter, one digit and special character, with minimum of 8 characters")
+    //Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&._-]).{8,30}$",message = "password must contains at least one small&capital letter, one digit and special character, with minimum of 8 characters")
     @Column(columnDefinition = "varchar(100) not null") //hashing
     private String password;
 

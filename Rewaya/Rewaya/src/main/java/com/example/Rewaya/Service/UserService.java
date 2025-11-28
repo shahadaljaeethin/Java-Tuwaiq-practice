@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.MessageDigest;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -20,7 +21,9 @@ private final UserRepository userRepository;
     public void addUser(User user){
         user.setPassword(hashPass(user.getPassword()));
         user.setRegisterDate(LocalDate.now());
-        if(user.getPfpURL()==null) user.setPfpURL("resource/mystery_user.jpeg"); //if user didn't upload pfp
+        user.setAboutMe(" ");
+        user.setFavoriteCategories(new ArrayList<>());
+        if(user.getPfpURL()==null) user.setPfpURL("mystery_user.jpeg"); //if user didn't upload pfp
         userRepository.save(user);}
 
 
@@ -37,6 +40,9 @@ private final UserRepository userRepository;
         user.setPassword(hashPass(newInfo.getPassword()));
         user.setAge(newInfo.getAge());
         user.setRole(newInfo.getRole());
+        user.setPfpURL(newInfo.getPfpURL());
+        //user.setAboutMe(newInfo.getAboutMe());
+
 
         userRepository.save(user);
         return true;
@@ -69,7 +75,66 @@ private final UserRepository userRepository;
         }
     }
 
-    public User logIn(String[] info){}
+    public User logIn(String[] info){
 
-    //public boolean addTiptoFav()
+        try {
+            String username =  info[0];
+            String password = info[1];
+            password = hashPass(password); //since pass is saved as hash
+            //==
+            return userRepository.findUserByUsernameAndPassword(username, password);
+            }
+        catch (Exception e){return null;}
+
+    }
+
+    public String makeProfile(String aboutMe,Integer id){
+    User user = userRepository.findUserById(id);
+    if(user==null) return "Userr not found";
+    if(aboutMe.length()>500) return "bio too long";
+    user.setAboutMe(aboutMe);
+    return "Bio updated";
+    }
+
+    public String addToFavCategory(Integer id,String category){
+
+        User user = userRepository.findUserById(id);
+        if(user==null) return "user not found";
+
+        String[] cate = {"Fantasy","SciFi","Romance","Drama","Action","Horror","Mystery","Thriller","Historical","Comedy","YoungAdult","Psychological","Social","Detective","Adventure","Philosophical"};
+        for(String c:cate){
+
+        if(c.equals(category)){
+
+            ArrayList<String> favCat = user.getFavoriteCategories();
+            favCat.add(category);
+            user.setFavoriteCategories(favCat);
+            userRepository.save(user);
+            return "added";
+
+                }
+
+        }
+       return "invalid category";
+    }
+
+    public String removeFavCate(Integer id,String category) {
+
+        User user = userRepository.findUserById(id);
+        if (user == null) return "user not found";
+
+        ArrayList<String> fav = user.getFavoriteCategories();
+        for(String cate:fav) {
+            if(cate.equals(category)){
+                fav.remove(cate);
+                user.setFavoriteCategories(fav);
+                userRepository.save(user);
+                return "removed";
+            }
+
+        }
+        return "category not found in list";
+    }
+
+
 }

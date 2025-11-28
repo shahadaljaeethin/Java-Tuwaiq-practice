@@ -37,8 +37,8 @@ public class User{
     private String email;
 
     @NotEmpty(message = "enter the password")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&._-]).{8,30}$",message = "password must contains at least one small&capital letter, one digit and special character, with minimum of 8 characters")
-    @Column(columnDefinition = "varchar(100) not null") //long hashing
+    //Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,30}$",message = "password must contains at least one small & capital letter, one digit with minimum of 8 characters")
+    @Column(columnDefinition = "varchar(150) not null") //long hashing
     private String password;
 
     @NotNull(message = "enter the age")
@@ -62,8 +62,6 @@ public class User{
 
     //can be empty -> default img.jpeg
     private String pfpURL;
-
-    private ArrayList<Integer> favoriteContent = new ArrayList<>();
 
     private ArrayList<String> favoriteCategories = new ArrayList<>();
 

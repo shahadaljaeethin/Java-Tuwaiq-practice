@@ -16,18 +16,18 @@ import java.util.List;
 public class AuthorService {
     private final AuthorRepository authorRepository;
     private final UserRepository userRepository;
-
+    private final SendEmail sendEmail;
     //---------------
 
-    public void registerAuthor(Author author){
+    public boolean registerAuthor(Author author){
 
-        if(author.getPfpURL()==null) author.setPfpURL("resource/mystery_author.jpeg");
+        if(author.getPfpURL()==null) author.setPfpURL("mystery_author.jpeg");
         author.setActive(false);
         author.setRegisterDate(LocalDate.now());
         author.setPassword(hashPass(author.getPassword())); //hash pass
         authorRepository.save(author);
-        //notify admin ?
 
+        return sendEmail.notifyAdmin(author);
     }
 
     public List<Author> getAll(){return authorRepository.findAll();}

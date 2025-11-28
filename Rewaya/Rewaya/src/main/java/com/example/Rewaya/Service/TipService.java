@@ -1,15 +1,14 @@
 package com.example.Rewaya.Service;
 
-import com.example.Rewaya.Model.Author;
-import com.example.Rewaya.Model.Chapter;
-import com.example.Rewaya.Model.Novel;
-import com.example.Rewaya.Model.Tip;
+import com.example.Rewaya.Model.*;
 import com.example.Rewaya.Repository.AuthorRepository;
 import com.example.Rewaya.Repository.TipRepository;
+import com.example.Rewaya.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,6 +16,7 @@ import java.util.List;
 public class TipService {
     private final TipRepository tipRepository;
     private final AuthorRepository authorRepository;
+    private final UserRepository userRepository;
 //==============================================================
 
 
@@ -26,6 +26,7 @@ public class TipService {
         if(author==null) return "author not found";
         if(!author.getActive()) return "Author is unActive currently";
 
+        tip.setLikes(new ArrayList<>());
         tip.setPublishDate(LocalDate.now());
         tipRepository.save(tip);
         return "Posted :) thank you for helping novelist community!";
@@ -59,6 +60,32 @@ public class TipService {
 
 ===========================================================================================================
  */
+
+    public String toggleLike(Integer userId, Integer tipId){
+        Tip tip = tipRepository.findTipById(tipId);
+        if(tip==null) return "tip not found";
+        User user = userRepository.findUserById(userId);
+        if(user==null) return "user not found";
+        //====================================================
+
+        ArrayList<Integer> likes = tip.getLikes();
+        if(likes.contains(userId))
+        {
+            likes.remove(userId);
+            tip.setLikes(likes);
+            tipRepository.save(tip);
+            return "Like removed";
+        }
+        else
+        {
+            likes.add(userId);
+            tip.setLikes(likes);
+            tipRepository.save(tip);
+            return "Liked :)";
+        }
+    }
+    public List<Tip> getMyFavTips(Integer userId){return tipRepository.findAll().stream().filter(tip -> tip.getLikes().contains(userId)).toList();}
+
 
 
 }

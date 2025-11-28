@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/rewaya/user")
 public class UserController {
 
     private final UserService userService;
@@ -24,7 +24,7 @@ public class UserController {
         return ResponseEntity.status(200).body(new ApiResponse("added"));
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/get")
     public ResponseEntity<?> getAll(){return ResponseEntity.status(200).body(userService.getAll());}
 
     @PutMapping("/update/{id}")
@@ -43,14 +43,15 @@ public class UserController {
         if(userService.deleteUser(id))
             return ResponseEntity.status(200).body(new ApiResponse("deleted"));
         return ResponseEntity.status(400).body(new ApiResponse("User not found"));
-
     }
 
-    @GetMapping("/log in/")
+    //============================================
+
+    @GetMapping("/log in")
     public ResponseEntity<?> logIn(@RequestBody String[] info){
         User user = userService.logIn(info);
         if(user!=null)
-            return ResponseEntity.status(200).body(user);
+            return ResponseEntity.status(200).body(new ApiResponse("logged in successfully to "+user.getUsername()));
         return ResponseEntity.status(400).body(new ApiResponse("wrong username or password"));
     }
 }

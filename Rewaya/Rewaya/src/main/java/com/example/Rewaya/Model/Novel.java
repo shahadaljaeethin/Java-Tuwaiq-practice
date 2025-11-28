@@ -45,7 +45,7 @@ public class Novel{
     private Boolean isCompleted;
 
 
-    private ArrayList<Integer> likes = new ArrayList<>(); //size = 0 = 0 likes
+    private ArrayList<Integer> likes; //size = 0 = 0 likes
 
     @PastOrPresent
     private LocalDate publishDate;
