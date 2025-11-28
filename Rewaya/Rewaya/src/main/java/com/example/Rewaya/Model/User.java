@@ -60,6 +60,9 @@ public class User{
     @PastOrPresent
     private LocalDate registerDate;
 
+    //can be empty -> default img.jpeg
+    private String pfpURL;
+
     private ArrayList<Integer> favoriteContent = new ArrayList<>();
 
     private ArrayList<String> favoriteCategories = new ArrayList<>();

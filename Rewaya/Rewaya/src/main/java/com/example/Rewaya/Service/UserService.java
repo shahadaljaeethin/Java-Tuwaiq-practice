@@ -20,6 +20,7 @@ private final UserRepository userRepository;
     public void addUser(User user){
         user.setPassword(hashPass(user.getPassword()));
         user.setRegisterDate(LocalDate.now());
+        if(user.getPfpURL()==null) user.setPfpURL("resource/mystery_user.jpeg"); //if user didn't upload pfp
         userRepository.save(user);}
 
 
@@ -67,4 +68,8 @@ private final UserRepository userRepository;
             return password;
         }
     }
+
+    public User logIn(String[] info){}
+
+    //public boolean addTiptoFav()
 }

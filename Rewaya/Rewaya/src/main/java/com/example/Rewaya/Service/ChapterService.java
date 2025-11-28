@@ -27,6 +27,7 @@ public class ChapterService {
         Novel nvl = novelRepository.findNovelById(ch.getNovelId());
         if(nvl==null) return "Novel not found";
         if(!authorRepository.findAuthorById(nvl.getAuthorId()).getActive()) return "Author is unActive currently";
+        if(nvl.getIsCompleted()) return "this novel is completed, edit novel status first to add new chapters";
 //========================================
 
         ch.setPublishDate(LocalDate.now());
@@ -34,8 +35,9 @@ public class ChapterService {
         if(lastChap == null) lastChap = 0;
 
        ch.setChapterNumber(lastChap+1);
+       ch.setViews(0); //it has no views yet
        chapterRepository.save(ch);
-       return "Published! :)";
+       return "Chapter published! :)";
 
     }
 
@@ -46,9 +48,6 @@ public class ChapterService {
 
         Chapter chapter = chapterRepository.findChapterById(id);
         if(chapter==null) return "Chapter not found";
-
-//        Novel novel = novelRepository.findNovelById(upd.getNovelId());
-//        if(novel==null) return "Novel not found";
 
         //end of check
         chapter.setTitle(upd.getTitle());
@@ -65,7 +64,26 @@ public class ChapterService {
         chapterRepository.delete(chapter);
         return true;
     }
+//============================================================================================EEP
 
+    public Chapter readChapter(Integer id){
+
+        Chapter ch = chapterRepository.findChapterById(id);
+        if(ch==null) return null;
+        ch.setViews(ch.getViews()+1);
+        chapterRepository.save(ch);
+        return ch;
+
+    }
+
+    public List<Chapter> getAlLChapOfNovel(Integer novelId){
+
+        Novel novel = novelRepository.findNovelById(novelId);
+        if(novel==null) return null; //novel not found
+
+        return chapterRepository.findChapterByNovelId(novelId);
+
+    }
 
 
 }

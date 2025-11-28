@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -28,20 +30,28 @@ public class Novel{
     @Lob
     private String overview;
 
-    @NotEmpty(message = "log in as author")
-    @Pattern(regexp = "(?i)^(Fantasy|SciFi|Romance|Drama|Action|Horror|Mystery|Thriller|Historical|Comedy|YoungAdult|Psychological|Social|Detective|Adventure|Philosophical)$",
-            message = "Invalid novel category")
-    private String category;
+    @ElementCollection
+    @CollectionTable(name = "novel_categories", joinColumns = @JoinColumn(name = "id"))
+    @Column(name = "category")
+    @Size(min=1, message ="choose at least 1 category")
+    private ArrayList<@Pattern(
+                regexp = "(?i)^(Fantasy|SciFi|Romance|Drama|Action|Horror|Mystery|Thriller|Historical|Comedy|YoungAdult|Psychological|Social|Detective|Adventure|Philosophical)$",
+                message = "Invalid category"
+        ) String> categories = new ArrayList<>();
+
 
     @AssertFalse
     @Column(nullable = false)
     private Boolean isCompleted;
 
-    @Column(columnDefinition = "int default 0 not null")
-    private Integer likes;
+
+    private ArrayList<Integer> likes = new ArrayList<>(); //size = 0 = 0 likes
 
     @PastOrPresent
     private LocalDate publishDate;
+
+    @NotEmpty(message = "upload cover image of the novel")
+    private String coverImg;
 
     @NotNull(message = "log in as author")
     private Integer authorId;

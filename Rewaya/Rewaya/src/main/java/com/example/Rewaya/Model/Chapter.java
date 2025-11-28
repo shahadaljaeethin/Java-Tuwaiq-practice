@@ -1,10 +1,7 @@
 package com.example.Rewaya.Model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PastOrPresent;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,6 +32,10 @@ public class Chapter{
 
     @Column(columnDefinition = "int not null")
     private Integer chapterNumber;
+
+    @PositiveOrZero
+    @Column(columnDefinition = "int default 0 not null")
+    private Integer views; //how many people read this chapter
 
     @NotNull(message = "enter the novel id of this chapter")
     private Integer novelId;

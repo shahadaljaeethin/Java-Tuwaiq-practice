@@ -16,4 +16,4 @@ public interface ChapterRepository extends JpaRepository<Chapter,Integer> {
 
     List<Chapter> findChapterByNovelId(Integer id);
 
-}
+    }

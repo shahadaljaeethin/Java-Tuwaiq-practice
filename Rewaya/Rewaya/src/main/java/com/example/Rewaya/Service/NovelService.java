@@ -51,7 +51,8 @@ private final ChapterRepository chapterRepository;
 
        novel.setTitle(upd.getTitle());
        novel.setOverview(upd.getOverview());
-       novel.setCategory(upd.getCategory());
+       novel.setCategories(upd.getCategories());
+       novel.setIsCompleted(upd.getIsCompleted());
        novelRepository.save(novel);
         return "updated";
 

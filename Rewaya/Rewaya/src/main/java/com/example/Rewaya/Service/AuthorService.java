@@ -21,6 +21,7 @@ public class AuthorService {
 
     public void registerAuthor(Author author){
 
+        if(author.getPfpURL()==null) author.setPfpURL("resource/mystery_author.jpeg");
         author.setActive(false);
         author.setRegisterDate(LocalDate.now());
         author.setPassword(hashPass(author.getPassword())); //hash pass
@@ -78,7 +79,7 @@ public class AuthorService {
     }
 
     //E.E.P    Activate or even freeze an author
-    public String accountStatus(boolean status,Integer admin,Integer authorId){
+    public String setAccountStatus(boolean status,Integer admin,Integer authorId){
 
         Author auth = authorRepository.findAuthorById(authorId);
         if(auth==null) return "author not found";
@@ -86,6 +87,8 @@ public class AuthorService {
         User user = userRepository.findUserById(admin);
         if(user==null) return "admin not found";
         if(!user.getRole().equals("admin")) return "role not allowed to do this operation!";
+
+        if(auth.getActive()==status) return "the author already has this status";
 
         auth.setActive(status);
         String message = (status) ? "Account Activated! :)" : "Account froze successfully";

@@ -58,6 +58,9 @@ public class Author{
     @Column(nullable = false)
     private Boolean active;
 
+    //can be empty -> default img.jpeg
+    private String pfpURL;
+
     @PastOrPresent
     private LocalDate registerDate;
 
