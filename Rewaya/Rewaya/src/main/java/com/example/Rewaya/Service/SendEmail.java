@@ -1,8 +1,11 @@
 package com.example.Rewaya.Service;
 
 import com.example.Rewaya.Model.Author;
+import com.example.Rewaya.Model.JoinRequest;
 import com.example.Rewaya.Model.Meeting;
 import com.example.Rewaya.Model.User;
+import com.example.Rewaya.Repository.AuthorRepository;
+import com.example.Rewaya.Repository.MeetingRepository;
 import com.example.Rewaya.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SendEmail {
     private final UserRepository userRepository;
+    private final AuthorRepository authorRepository;
+    private final MeetingRepository meetingRepository;
+
+
 
     @Autowired
     private JavaMailSender javaEmailSender;
@@ -23,28 +30,50 @@ public class SendEmail {
         if(admin==null) return false;
         String adminMail = admin.getEmail();
 
-        String body = "a new Author has been register, please contact them.   contact info: "+author.getName()+" | "+author.getPhoneNumber()+" | "+author.getEmail()+" | Freelancer code: "+author.getFreelancerCode();
+        String body = "a new Author has been registered, please contact them.  contact info: "+author.getName()+" | "+author.getPhoneNumber()+" | "+author.getEmail()+" | Freelancer code: "+author.getFreelancerCode();
 
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
 
         simpleMailMessage.setTo(adminMail);
         simpleMailMessage.setFrom("rewaya.website26@outlook.com");
-        simpleMailMessage.setSubject("a New Task");
+        simpleMailMessage.setSubject("New Task");
         simpleMailMessage.setText(body);
         javaEmailSender.send(simpleMailMessage);
         return true;
 
     }
 
-    public void sendMeetingLink(String username, String email, Meeting meeting){
+    public void sendMeetingLink(JoinRequest jr){
 
-    String body = "Dear "+username+", this is the meeting link you requested to join of title: "+meeting.getTitle()+"."
+        User user = userRepository.findUserById(jr.getUserId());
+        Meeting meeting = meetingRepository.findMeetingById(jr.getMeetingId());
+
+    String body = "Dear "+user.getUsername()+", this is the meeting link you requested to join of title: "+meeting.getTitle()+"."
      +" on date "+meeting.getStartDate()+" - "+meeting.getEndDate()+", LINK: [ "+meeting.getLinkURL()+" ] Please join in time";
 
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setTo(email);
+        simpleMailMessage.setTo(user.getEmail());
         simpleMailMessage.setFrom("rewaya.website26@outlook.com");
         simpleMailMessage.setSubject("Meeting Link :)");
+        simpleMailMessage.setText(body);
+        javaEmailSender.send(simpleMailMessage);
+
+    }
+
+    public void notifyAuthor(JoinRequest jr){
+
+        Meeting meeting = meetingRepository.findMeetingById(jr.getMeetingId());
+        Author author = authorRepository.findAuthorById(meeting.getAuthorId());
+        String URL = "http://localhost:8080/api/v1/rewaya/join request/"+jr.getId()+"/"+author.getId()+"/true";
+        String body = "Dear author "+author.getName()+", a new join request send to the meeting of yours [ "+meeting.getTitle()+" ] " +
+                ", with request message : ["+jr.getMessage()+" ] "
+                +
+                "please go to this page to approve them -> "+URL;
+
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setTo(author.getEmail());
+        simpleMailMessage.setFrom("rewaya.website26@outlook.com");
+        simpleMailMessage.setSubject("New Request for "+meeting.getTitle());
         simpleMailMessage.setText(body);
         javaEmailSender.send(simpleMailMessage);
 

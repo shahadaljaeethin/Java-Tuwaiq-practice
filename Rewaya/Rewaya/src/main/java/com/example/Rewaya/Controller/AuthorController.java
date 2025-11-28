@@ -50,4 +50,12 @@ public class AuthorController {
     }
     //==============================
 
+    @PutMapping("/activate {status}/{admin}/{authId}")
+    public ResponseEntity<?> changeAuthorStatus(@PathVariable Integer admin,@PathVariable Integer authId,@PathVariable boolean status){
+    String res = authorService.setAccountStatus(status,admin,authId);
+    if(res.equals("Account Activated! :)")||res.equals("Account froze successfully"))
+        return ResponseEntity.status(200).body(new ApiResponse(res));
+    return ResponseEntity.status(400).body(new ApiResponse(res));
+    }
+
 }

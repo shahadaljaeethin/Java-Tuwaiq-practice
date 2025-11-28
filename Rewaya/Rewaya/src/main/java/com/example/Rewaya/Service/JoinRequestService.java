@@ -19,6 +19,8 @@ public class JoinRequestService {
     private final JoinRequestRepository joinRequestRepository;
     private final MeetingService meetingService;
     private final UserRepository userRepository;
+    private final SendEmail sendEmail;
+
 
     //add
     public String sendRequest(JoinRequest jr){
@@ -45,6 +47,7 @@ public class JoinRequestService {
 
 
         //notify author
+        sendEmail.notifyAuthor(jr);
         return "Request sent to the Author :)";
 
     }
@@ -81,15 +84,21 @@ public class JoinRequestService {
         meetingService.addListener(jr.getUserId(), jr.getMeetingId());
         jr.setStatus("approved");
         joinRequestRepository.save(jr);
-        //send meeting link to the user
-
+        sendEmail.sendMeetingLink(jr); //send link to user
          }
         else{
             jr.setStatus("rejected");
             joinRequestRepository.save(jr);
             }
 
-
         return "status changed";
     }
+
+
+    public List<JoinRequest> myApprovedRequest(Integer userId){
+        User user = userRepository.findUserById(userId);
+        if(user==null) return null;
+        return joinRequestRepository.getMyApprovedRequests(userId);
+    }
+
 }

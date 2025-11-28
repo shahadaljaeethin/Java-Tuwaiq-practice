@@ -12,7 +12,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/chapter")
+@RequestMapping("/api/v1/rewaya/chapter")
 @RequiredArgsConstructor
 public class ChapterController {
     private final ChapterService chapterService;
@@ -48,9 +48,9 @@ public class ChapterController {
         return ResponseEntity.status(400).body(new ApiResponse("chapter not found"));
     }
 
-    //EEP
+    //EEP =================================================
 
-    @GetMapping("/read/{id}")
+    @PutMapping("/read/{id}")
     public ResponseEntity<?> readChapter(@PathVariable Integer id){
         Chapter ch = chapterService.readChapter(id);
         if(ch!=null) return ResponseEntity.status(200).body(ch);
@@ -58,7 +58,7 @@ public class ChapterController {
     }
 
     //EEP
-    @GetMapping("/novel-chapters/{novelId}")
+    @GetMapping("/novel chapters/{novelId}")
     public ResponseEntity<?> getAlLChapOfNovel(@PathVariable Integer novelId){
         List<Chapter> chapters = chapterService.getAlLChapOfNovel(novelId);
         if(chapters!=null) return ResponseEntity.status(200).body(chapters);

@@ -54,7 +54,6 @@ public class Author{
     private String freelancerCode;
 
 
-    @AssertFalse
     @Column(nullable = false)
     private Boolean active;
 

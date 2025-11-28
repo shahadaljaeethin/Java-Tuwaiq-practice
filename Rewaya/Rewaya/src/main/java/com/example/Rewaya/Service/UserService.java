@@ -88,7 +88,7 @@ private final UserRepository userRepository;
 
     }
 
-    public String makeProfile(String aboutMe,Integer id){
+    public String addBio(String aboutMe,Integer id){
     User user = userRepository.findUserById(id);
     if(user==null) return "Userr not found";
     if(aboutMe.length()>500) return "bio too long";

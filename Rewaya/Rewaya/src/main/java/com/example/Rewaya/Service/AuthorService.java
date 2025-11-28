@@ -27,7 +27,8 @@ public class AuthorService {
         author.setPassword(hashPass(author.getPassword())); //hash pass
         authorRepository.save(author);
 
-        return sendEmail.notifyAdmin(author);
+        return true; //tired of email spams
+       // return sendEmail.notifyAdmin(author);
     }
 
     public List<Author> getAll(){return authorRepository.findAll();}
@@ -88,9 +89,10 @@ public class AuthorService {
         if(user==null) return "admin not found";
         if(!user.getRole().equals("admin")) return "role not allowed to do this operation!";
 
-        if(auth.getActive()==status) return "the author already has this status";
+        if(auth.getActive().equals(status)) return "the author already has this status";
 
         auth.setActive(status);
+        authorRepository.save(auth);
         String message = (status) ? "Account Activated! :)" : "Account froze successfully";
         return message;
 
